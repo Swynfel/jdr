@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Activité{% endblock %}
+{% block content %}
+<div class=container-fluid>
+    <div class=row>
+        <div class=container-fluid>
+            <h2>Activité</h2>
+        </div>
+    </div>
+    <div style="padding: 10px;"></div>
+    <div class=row>
+        <div class=container-fluid>
+            <a href='{% url "activity-all" %}'><button type="button" class="btn btn-primary">Retour</button></a>
+        </div>
+    </div>
+    <div style="padding: 10px;"></div>
+    <div class="col-12">
+    	{% with extra=True %}
+        {% include "activity_panel.html" %}
+    	{% endwith %}
+    </div>
+</div>
+{% endblock content %}

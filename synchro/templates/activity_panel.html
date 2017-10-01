@@ -1,0 +1,78 @@
+{# context: activity,extra #}
+{% load synchro_filter %}
+<!-- start activity -->
+<div class="panel panel-default" id="activity-{{activity.pk}}">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left" style="margin: 5px">{{activity.name}}</h3>
+        {% with me=activity|activity_user_relation:request.user %}
+        <h4 class="pull-right" style="margin: 0px"><span class="label label-{{me.type}}">{{me.info}}</span></h4>
+        {% endwith %}
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item" style="padding-bottom:10px;padding-top: 5px;">
+            <h5 style="margin:0px">
+                {% if activity.tags.all %}
+                    <!--system tags-->
+                    {% with type="info" %}
+                        {% for tag in activity.systemTags %}
+                        {% include "tag.html" %}
+                        {% endfor %}
+                    {% endwith %}
+                    <!--normal tags-->
+                    {% with type="primary" %}
+                        {% for tag in activity.normalTags %}
+                        {% include "tag.html" %}
+                        {% endfor %}
+                    {% endwith %}
+                    {% else %}
+                        Aucuns tags
+                {% endif %}
+            </h5>
+        </li>
+        <li class="list-group-item text-center">
+            {% with bar=activity.slots.all %}
+            {% with short=extra|not %}
+            {% with form=False %}
+                {% include "slot-bar.html" %}
+            {% endwith %}
+            {% endwith %}
+            {% endwith %}
+        </li>
+        <li class="list-group-item text-center">
+            {% with bar=activity.playerBar %}
+            <b>{{bar.playing}}</b> sur <b>{{activity.minimum}} à {{activity.maximum}}</b> joueurs{% if bar.flavor %} <i>{{ bar.flavor }}</i>{% endif %}
+            <div class="progress" style="margin-bottom: 0px">
+                {% if bar.type == 2 %}
+                    <div class="progress-bar progress-bar-success" style="width: {{ bar.green }}%">
+                    </div>
+                    <div class="progress-bar progress-bar-info" style="width: {{ bar.blue }}%">
+                    </div>
+                    <div>
+                        {{ bar.msg }}
+                    </div>
+                {% else %}
+                    <div class="progress-bar progress-bar-success" style="width: {{ bar.green }}%">
+                    </div>
+                    <div>
+                        {{ bar.msg }}
+                    </div>
+                {% endif %}
+            </div>
+            {% endwith %}
+        </li>
+        <li class="list-group-item">
+            {{activity.description}}
+        </li>
+        <li class="list-group-item text-center">
+            {% if extra %}
+            <a href='TODO'><button type="button" class="btn btn-success">S'ajouter</button></a>
+            {% else %}
+            <a href='{% url "activity-get" activity.pk %}'><button type="button" class="btn btn-primary">Voir</button></a>
+            {% endif %}
+            {% if activity.organiser == request.user %}
+                <a href='{% url "activity-edit" activity.pk %}'><button type="button" class="btn btn-info">Editer</button></a>
+            {% endif %}
+        </li>
+    </ul>
+</div>
+<!-- end activity -->

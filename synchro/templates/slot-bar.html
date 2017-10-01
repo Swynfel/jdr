@@ -1,0 +1,16 @@
+{# context: bar, form, short #}
+{% load synchro_filter %}
+{% with slots="slots"|get_all %}
+<div class="btn-group btn-group-justified" role="group" aria-label="...">
+    {% if form %}
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-{% if bar|length == slots|length %}primary{% else %}default{% endif %} no-hover">Tous</button>
+    </div>
+    {% endif %}
+    {% for slot in slots %}
+    <div class="btn-group" role="group">
+        <button type="button" class="btn btn-{% if slot in bar %}primary{% else %}default{% endif %} no-hover">{% if short %}{{slot.shortname}}{% else %}{{slot.name}}{% endif %}</button>
+    </div>
+    {% endfor %}
+</div>
+{% endwith %}

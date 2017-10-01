@@ -33,11 +33,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
     'synchro',
+    'dal',
+    'dal_select2',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'widget_tweaks',
+    'front',
+    'braces',
+    'hijack',
+    'compat',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +107,12 @@ else:
     }
 
 
+#Mail
+
+DEFAULT_FROM_EMAIL = "conv@faerix.net"
+SERVER_EMAIL = "webmaster@faerix.net" # redirige sur info@faerix.polytechnique.org
+ADMINS = [("Webmaster Faërix", "webmaster@faerix.net")]
+EMAIL_SUBJECT_PREFIX = "[jdr-Faërix] "
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -119,13 +132,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = 'index'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'FR-fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -140,3 +154,22 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
+#Debug options
+
+SILENCED_SYSTEM_CHECKS = ["urls.W003"]
+
+#Security
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+#Hijack
+
+HIJACK_LOGIN_REDIRECT_URL = '/'  # Where admins are redirected to after hijacking a user
+HIJACK_LOGOUT_REDIRECT_URL = '/admin/conv/user/'  # Where admins are redirected to after releasing a user
+HIJACK_DISPLAY_ADMIN_BUTTON = False
+HIJACK_USE_BOOTSTRAP = True
+HIJACK_AUTHORIZE_STAFF = True
+HIJACK_AUTHORIZE_STAFF_TO_HIJACK_STAFF = True

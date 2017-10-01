@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Liste des activités proposées{% endblock %}
+{% block content %}
+<div class=container-fluid>
+    <div class=row>
+        <div class=container-fluid>
+            <h2>Liste des activités proposées</h2>
+        </div>
+    </div>
+    <div class=row>
+        <div class=container-fluid>
+
+        </div>
+    </div>
+    <div style="padding: 20px;"></div>
+    <div class=row>
+        <div class=container-fluid>
+            <!--recherche-->
+            {% include "form/form.html" %}
+        </div>
+    </div>
+    <div>
+    {% cycle "</div><div class=row>" "" as next_row silent %}
+        {% for activity in activities %}
+        {% cycle next_row %}
+        <div class="col-xs-12 col-md-6">
+            <!-- activity -->
+            {% include "activity_panel.html" %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+
